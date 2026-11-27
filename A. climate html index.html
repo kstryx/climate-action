@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClimateGuard — SDG 13 Climate Action</title>
+  <meta name="description" content="ClimateGuard is a simple, friendly educational website aligned with UN SDG 13 (Climate Action) that turns climate knowledge into everyday habits." />
+
+  <!-- Google Fonts: Fraunces (editorial display) & Plus Jakarta Sans (clean UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bgSoft: '#F8FAF7',
+            borderSoft: '#E2E8E0',
+            forest: '#163A2C',
+            leaf: '#2D7A56',
+            amberSun: '#E09F3E',
+            mintSoft: '#EAF4EE',
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
+            serif: ['"Fraunces"', 'Georgia', 'serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- Minimal custom animations for floating hero scene, check pop, plant stages & celebration -->
+  <style>
+    @keyframes gentleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-9px); }
+    }
+    @keyframes softPop {
+      0% { transform: scale(0.82); opacity: 0; }
+      65% { transform: scale(1.06); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes leafFall {
+      0% { transform: translateY(-10px) rotate(0deg) scale(0.9); opacity: 1; }
+      100% { transform: translateY(230px) rotate(260deg) scale(1.1); opacity: 0; }
+    }
+    .animate-float {
+      animation: gentleFloat 5.5s ease-in-out infinite;
+    }
+    .animate-pop {
+      animation: softPop 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .animate-fade-up {
+      animation: fadeSlideUp 0.28s ease-out forwards;
+    }
+    .confetti-leaf {
+      position: absolute;
+      top: 0;
+      pointer-events: none;
+      animation: leafFall 1.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+  </style>
+</head>
+<body class="bg-bgSoft text-forest font-sans antialiased selection:bg-mintSoft selection:text-forest overflow-x-hidden">
+
+  <!-- =========================================================
+       TOP READING PROGRESS BAR
+       ========================================================= -->
+  <div class="fixed top-0 left-0 right-0 h-1 z-[60] bg-transparent pointer-events-none">
+    <div id="reading-progress" class="h-full bg-gradient-to-r from-leaf via-leaf to-amberSun w-0 transition-[width] duration-100 ease-out"></div>
+  </div>
+
+  <!-- =========================================================
+       STICKY FLOATING NAVIGATION BAR
+       ========================================================= -->
+  <header class="sticky top-0 z-50 pt-3 px-4 sm:px-6">
+    <nav class="max-w-5xl mx-auto bg-white/90 backdrop-blur-md border border-borderSoft rounded-2xl shadow-sm px-4 sm:px-6" aria-label="Main Navigation">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand Logo -->
+        <a href="#home" class="flex items-center gap-2.5 group focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf rounded-xl p-1">
+          <span class="w-9 h-9 rounded-xl bg-forest text-white flex items-center justify-center group-hover:bg-leaf transition-colors">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+              <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+            </svg>
+          </span>
+          <span class="font-serif font-bold text-lg tracking-tight text-forest">ClimateGuard</span>
+        </a>
+
+        <!-- Desktop Links -->
+        <div class="hidden md:flex items-center gap-1">
+          <a href="#home" class="px-3.5 py-2 rounded-xl text-sm font-semibold text-forest/75 hover:text-forest hover:bg-mintSoft/70 transition-colors">Home</a>
+          <a href="#learn" class="px-3.5 py-2 rounded-xl text-sm font-semibold text-forest/75 hover:text-forest hover:bg-mintSoft/70 transition-colors">Learn</a>
+          <a href="#solutions" class="px-3.5 py-2 rounded-xl text-sm font-semibold text-forest/75 hover:text-forest hover:bg-mintSoft/70 transition-colors">Solutions</a>
+          <a href="#action" class="px-3.5 py-2 rounded-xl text-sm font-semibold text-forest/75 hover:text-forest hover:bg-mintSoft/70 transition-colors">Take Action</a>
+          <a href="#about" class="px-3.5 py-2 rounded-xl text-sm font-semibold text-forest/75 hover:text-forest hover:bg-mintSoft/70 transition-colors">About</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          class="md:hidden inline-flex items-center justify-center p-2.5 rounded-xl text-forest hover:bg-mintSoft focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf transition-colors"
+          aria-controls="mobile-menu"
+          aria-expanded="false"
+          aria-label="Open menu"
+        >
+          <svg id="icon-open" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+          </svg>
+          <svg id="icon-close" class="w-6 h-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Mobile Dropdown -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4 pt-2 border-t border-borderSoft">
+        <div class="flex flex-col gap-1">
+          <a href="#home" class="mobile-link px-3 py-2.5 rounded-xl text-base font-semibold text-forest hover:bg-mintSoft/70 transition-colors">Home</a>
+          <a href="#learn" class="mobile-link px-3 py-2.5 rounded-xl text-base font-semibold text-forest hover:bg-mintSoft/70 transition-colors">Learn</a>
+          <a href="#solutions" class="mobile-link px-3 py-2.5 rounded-xl text-base font-semibold text-forest hover:bg-mintSoft/70 transition-colors">Solutions</a>
+          <a href="#action" class="mobile-link px-3 py-2.5 rounded-xl text-base font-semibold text-forest hover:bg-mintSoft/70 transition-colors">Take Action</a>
+          <a href="#about" class="mobile-link px-3 py-2.5 rounded-xl text-base font-semibold text-forest hover:bg-mintSoft/70 transition-colors">About</a>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <!-- =========================================================
+         SECTION 1: HOME (HERO + LIVE SYNCED EARTH/SPROUT SVG)
+         ========================================================= -->
+    <section id="home" class="pt-12 pb-20 sm:pt-20 sm:pb-28 px-4 sm:px-6">
+      <div class="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+        <!-- Left Copy -->
+        <div class="lg:col-span-7">
+          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-mintSoft border border-leaf/20 text-leaf text-xs font-bold tracking-wider uppercase mb-6">
+            <span class="w-2 h-2 rounded-full bg-amberSun"></span>
+            UN SDG 13 · Climate Action
+          </span>
+
+          <h1 class="font-serif font-bold text-4xl sm:text-5xl lg:text-[3.4rem] text-forest tracking-tight leading-[1.08] mb-5">
+            A healthier planet starts with us.
+          </h1>
+
+          <p class="text-base sm:text-lg text-forest/75 leading-relaxed mb-8 max-w-xl">
+            <strong class="font-semibold text-forest">Small actions. Lasting impact.</strong> Understand climate change and turn everyday choices into simple, trackable habits.
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-3.5">
+            <a href="#action" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-leaf text-white font-semibold text-base shadow-sm hover:bg-forest transition-all">
+              Take Action
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+            <a href="#learn" class="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-2xl bg-white text-forest font-semibold text-base border border-borderSoft hover:border-leaf hover:bg-mintSoft/50 transition-all">
+              Learn the Basics
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Interactive Floating Earth & Sprout Scene -->
+        <div class="lg:col-span-5 flex justify-center">
+          <a href="#action" class="group relative block w-full max-w-[340px] bg-white border border-borderSoft rounded-[2rem] p-6 shadow-sm hover:shadow-md hover:border-leaf/40 transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf" aria-label="View your live ClimateGuard level and jump to checklist">
+            <!-- Floating SVG Scene -->
+            <div class="animate-float flex items-center justify-center py-2">
+              <svg viewBox="0 0 240 210" class="w-56 h-48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <!-- Warm Sunlight Halo -->
+                <circle cx="176" cy="48" r="22" fill="#E09F3E" fill-opacity="0.2" />
+                <circle cx="176" cy="48" r="13" fill="#E09F3E" />
+
+                <!-- Soft Orbit Ring -->
+                <ellipse cx="120" cy="130" rx="86" ry="30" stroke="#E2E8E0" stroke-width="2" stroke-dasharray="5 6" />
+
+                <!-- Stylized Earth Sphere -->
+                <circle cx="120" cy="128" r="56" fill="#2D7A56" />
+                <!-- Organic Continents -->
+                <path d="M84 106C94 98 111 99 116 109C120 117 110 128 103 135C95 142 82 140 77 129C73 121 77 112 84 106Z" fill="#EAF4EE" fill-opacity="0.35" />
+                <path d="M132 118C144 112 161 118 164 131C167 142 155 157 142 159C132 160 124 148 125 137C126 129 127 121 132 118Z" fill="#EAF4EE" fill-opacity="0.3" />
+                <!-- Earth Bottom Shadow -->
+                <path d="M68 148C82 172 118 188 152 172C164 166 172 155 175 142C160 165 124 176 92 165C82 161 74 155 68 148Z" fill="#163A2C" fill-opacity="0.3" />
+
+                <!-- Growing Sprout on Top of Earth -->
+                <path d="M120 74V44" stroke="#163A2C" stroke-width="4" stroke-linecap="round" />
+                <path d="M120 56C106 54 96 44 97 31C110 31 120 40 120 56Z" fill="#2D7A56" />
+                <path d="M120 48C133 44 144 33 142 20C129 22 120 33 120 48Z" fill="#E09F3E" />
+                <!-- Tiny sparkles -->
+                <circle cx="62" cy="72" r="3.5" fill="#E09F3E" fill-opacity="0.8" />
+                <circle cx="186" cy="96" r="3" fill="#2D7A56" fill-opacity="0.5" />
+              </svg>
+            </div>
+
+            <!-- Live Synced Level Pill -->
+            <div class="mt-2 bg-bgSoft border border-borderSoft rounded-2xl p-3.5 flex items-center justify-between gap-3">
+              <div>
+                <p class="text-[11px] font-bold uppercase tracking-wider text-leaf">Your Live Level</p>
+                <p id="hero-level-name" class="font-serif font-bold text-base text-forest leading-snug">Seedling Starter</p>
+              </div>
+              <div class="text-right">
+                <span id="hero-level-count" class="inline-flex items-center px-3 py-1 rounded-full bg-forest text-white text-xs font-bold">
+                  0 / 8
+                </span>
+                <p class="text-[11px] text-forest/60 mt-1 group-hover:text-leaf transition-colors">Track habits →</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 2: LEARN (INTERACTIVE 2-TAB CAUSES & IMPACTS + SDG 13)
+         ========================================================= -->
+    <section id="learn" class="py-20 sm:py-24 px-4 sm:px-6 bg-white border-y border-borderSoft">
+      <div class="max-w-5xl mx-auto">
+        <!-- Section Header -->
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <p class="text-xs font-bold uppercase tracking-widest text-leaf mb-2">01 · Learn</p>
+          <h2 class="font-serif font-bold text-3xl sm:text-4xl text-forest mb-3">Why climate action matters</h2>
+          <p class="text-base text-forest/75">
+            Human activities release greenhouse gases that trap extra heat in our atmosphere. Switch tabs below to explore the causes and impacts.
+          </p>
+        </div>
+
+        <!-- Clean 2-Tab Pill Switcher -->
+        <div class="flex justify-center mb-10">
+          <div class="inline-flex p-1.5 rounded-2xl bg-bgSoft border border-borderSoft" role="tablist" aria-label="Climate change overview tabs">
+            <button
+              id="tab-causes"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="panel-learn"
+              class="learn-tab-btn px-5 sm:px-7 py-2.5 rounded-xl text-sm font-bold bg-forest text-white shadow-sm transition-all cursor-pointer"
+              data-tab="causes"
+            >
+              What Causes It?
+            </button>
+            <button
+              id="tab-impacts"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="panel-learn"
+              class="learn-tab-btn px-5 sm:px-7 py-2.5 rounded-xl text-sm font-bold text-forest/75 hover:text-forest transition-all cursor-pointer"
+              data-tab="impacts"
+            >
+              What Are the Impacts?
+            </button>
+          </div>
+        </div>
+
+        <!-- Dynamic 3-Card Grid (Rendered by JS for instant transitions) -->
+        <div id="panel-learn" role="tabpanel" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+          <!-- Cards populated cleanly via JavaScript -->
+        </div>
+
+        <!-- Compact UN SDG 13 Target 13.3 Callout Banner -->
+        <div class="rounded-3xl bg-forest text-white p-6 sm:p-8 flex flex-col sm:flex-row items-start sm:items-center gap-5 sm:gap-7">
+          <div class="shrink-0 w-16 h-16 rounded-2xl bg-leaf border border-white/15 flex flex-col items-center justify-center">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-mintSoft">SDG</span>
+            <span class="font-serif font-bold text-3xl leading-none">13</span>
+          </div>
+          <div class="flex-1">
+            <div class="flex flex-wrap items-center gap-2 mb-1.5">
+              <span class="text-xs font-bold uppercase tracking-wider text-amberSun">UN SDG 13 · Target 13.3</span>
+              <span class="text-white/40">•</span>
+              <span class="text-xs font-medium text-mintSoft">Global Framework</span>
+            </div>
+            <p class="text-sm sm:text-base text-white/90 leading-relaxed">
+              Improve climate education, awareness-raising, and everyday human capacity to reduce emissions, adapt to risks, and support climate action.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 3: SOLUTIONS (INTERACTIVE 4-CATEGORY EXPLORER)
+         ========================================================= -->
+    <section id="solutions" class="py-20 sm:py-24 px-4 sm:px-6">
+      <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="text-center max-w-2xl mx-auto mb-9">
+          <p class="text-xs font-bold uppercase tracking-widest text-leaf mb-2">02 · Solutions</p>
+          <h2 class="font-serif font-bold text-3xl sm:text-4xl text-forest mb-3">Practical everyday solutions</h2>
+          <p class="text-base text-forest/75">
+            Pick an area below to explore simple, realistic ways to lower your climate footprint.
+          </p>
+        </div>
+
+        <!-- 4 Friendly Category Filter Pills -->
+        <div class="flex flex-wrap justify-center gap-2.5 sm:gap-3 mb-10" role="tablist" aria-label="Solution categories">
+          <button type="button" data-sol-cat="energy" class="sol-pill px-5 py-2.5 rounded-2xl text-sm font-bold bg-forest text-white shadow-sm transition-all cursor-pointer">
+            ⚡ Energy
+          </button>
+          <button type="button" data-sol-cat="resources" class="sol-pill px-5 py-2.5 rounded-2xl text-sm font-bold bg-white text-forest border border-borderSoft hover:border-leaf hover:bg-mintSoft/50 transition-all cursor-pointer">
+            ♻️ Resources
+          </button>
+          <button type="button" data-sol-cat="nature" class="sol-pill px-5 py-2.5 rounded-2xl text-sm font-bold bg-white text-forest border border-borderSoft hover:border-leaf hover:bg-mintSoft/50 transition-all cursor-pointer">
+            🌿 Nature
+          </button>
+          <button type="button" data-sol-cat="travel" class="sol-pill px-5 py-2.5 rounded-2xl text-sm font-bold bg-white text-forest border border-borderSoft hover:border-leaf hover:bg-mintSoft/50 transition-all cursor-pointer">
+            🚲 Travel
+          </button>
+        </div>
+
+        <!-- 3 Crisp Action Cards Container -->
+        <div id="solutions-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Populated dynamically via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 4: TAKE ACTION (HABIT CHECKLIST + GROWING PLANT SVG)
+         ========================================================= -->
+    <section id="action" class="py-20 sm:py-24 px-4 sm:px-6 bg-white border-y border-borderSoft">
+      <div class="max-w-5xl mx-auto">
+        <!-- Header -->
+        <div class="max-w-2xl mb-12">
+          <p class="text-xs font-bold uppercase tracking-widest text-leaf mb-2">03 · Take Action</p>
+          <h2 class="font-serif font-bold text-3xl sm:text-4xl text-forest mb-3">Grow your climate habits</h2>
+          <p class="text-base text-forest/75">
+            Check off the everyday actions you practice. Watch your ClimateGuard plant grow from a tiny seed into a thriving tree!
+          </p>
+        </div>
+
+        <!-- 2-Column Interactive Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- Left: 8-Item Interactive Checklist -->
+          <div class="lg:col-span-7 space-y-3" id="habit-list" aria-label="Everyday Climate Habits Checklist">
+            <!-- Rendered by JavaScript -->
+          </div>
+
+          <!-- Right: Sticky Living Plant Progress Card -->
+          <div class="lg:col-span-5 lg:sticky lg:top-24">
+            <div id="plant-card" class="relative overflow-hidden bg-bgSoft border border-borderSoft rounded-[2rem] p-6 sm:p-7 text-center shadow-sm">
+              <!-- Celebration Confetti Layer -->
+              <div id="confetti-layer" class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true"></div>
+
+              <!-- Current Badge Pill -->
+              <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white border border-borderSoft text-xs font-bold text-leaf mb-3">
+                <span id="stage-dot" class="w-2 h-2 rounded-full bg-amberSun"></span>
+                <span id="plant-badge-name">Seedling Starter</span>
+              </div>
+
+              <!-- Dynamic 5-Stage Growing Plant SVG -->
+              <div id="plant-svg-wrapper" class="flex items-center justify-center my-2 min-h-[190px]">
+                <!-- SVG injected dynamically per growth stage -->
+              </div>
+
+              <!-- Percentage & Count -->
+              <div class="flex items-center justify-center gap-3 mt-2 mb-3">
+                <span id="progress-percent" class="font-serif font-bold text-3xl text-forest">0%</span>
+                <span class="text-forest/30">|</span>
+                <span id="progress-count" class="text-sm font-semibold text-forest/75">0 of 8 habits</span>
+              </div>
+
+              <!-- Smooth Progress Bar -->
+              <div class="w-full h-3 bg-white border border-borderSoft rounded-full overflow-hidden mb-4" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar-wrap">
+                <div id="progress-bar-fill" class="h-full bg-gradient-to-r from-leaf to-amberSun rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
+              </div>
+
+              <!-- Encouraging Message -->
+              <p id="progress-message" class="text-sm text-forest/80 leading-relaxed min-h-[42px] mb-5">
+                Start with just one small habit today—every check helps your plant sprout!
+              </p>
+
+              <!-- Reset Button & Inline Feedback -->
+              <div class="flex flex-col items-center gap-2">
+                <button
+                  id="reset-progress-btn"
+                  type="button"
+                  class="px-4 py-2 rounded-xl text-xs font-bold text-forest/70 bg-white border border-borderSoft hover:border-forest hover:text-forest transition-colors cursor-pointer"
+                >
+                  Reset Progress
+                </button>
+                <p id="reset-feedback" class="text-xs font-semibold text-leaf h-4 opacity-0 transition-opacity duration-300" aria-live="polite"></p>
+              </div>
+            </div>
+
+            <p class="mt-3 text-center text-xs text-forest/55">
+              Saved automatically in your browser · No account needed
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         SECTION 5: ABOUT & TRUSTED SOURCES
+         ========================================================= -->
+    <section id="about" class="py-20 sm:py-24 px-4 sm:px-6">
+      <div class="max-w-5xl mx-auto">
+        <div class="max-w-2xl mb-10">
+          <p class="text-xs font-bold uppercase tracking-widest text-leaf mb-2">04 · About &amp; Sources</p>
+          <h2 class="font-serif font-bold text-3xl sm:text-4xl text-forest">Honest scope &amp; trusted science</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Left: Honest Project Scope -->
+          <div class="bg-white border border-borderSoft rounded-3xl p-7 sm:p-8 flex flex-col justify-between">
+            <div>
+              <span class="inline-block px-3 py-1 rounded-full bg-mintSoft text-leaf text-xs font-bold uppercase tracking-wider mb-4">
+                Honest Project Scope
+              </span>
+              <h3 class="font-serif font-bold text-2xl text-forest mb-3">What ClimateGuard is</h3>
+              <p class="text-sm sm:text-base text-forest/80 leading-relaxed mb-4">
+                ClimateGuard is an educational awareness website built to explain climate basics clearly and encourage simple everyday habits. It is <strong>not</strong> a live carbon calculator, emissions database, or forecasting tool.
+              </p>
+              <p class="text-sm text-forest/70 leading-relaxed">
+                Your checklist progress is stored locally in your own browser using <code class="px-1.5 py-0.5 rounded bg-bgSoft text-forest text-xs">localStorage</code>—no account, tracking, or server is required.
+              </p>
+            </div>
+            <div class="mt-6 pt-4 border-t border-borderSoft flex items-center gap-2 text-xs font-semibold text-leaf">
+              <span class="w-2 h-2 rounded-full bg-leaf"></span>
+              Simple · Privacy-First · Student Educational Project
+            </div>
+          </div>
+
+          <!-- Right: Trusted Sources -->
+          <div class="bg-white border border-borderSoft rounded-3xl p-7 sm:p-8">
+            <span class="inline-block px-3 py-1 rounded-full bg-amberSun/15 text-forest text-xs font-bold uppercase tracking-wider mb-4">
+              Verified References
+            </span>
+            <h3 class="font-serif font-bold text-2xl text-forest mb-4">Trusted Sources</h3>
+
+            <ul class="space-y-2.5">
+              <li>
+                <a href="https://sdgs.un.org/goals/goal13" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-3.5 rounded-2xl bg-bgSoft border border-transparent hover:border-leaf/30 hover:bg-mintSoft/50 transition-all">
+                  <div>
+                    <p class="font-semibold text-sm sm:text-base text-forest group-hover:text-leaf transition-colors">United Nations — SDG 13</p>
+                    <p class="text-xs text-forest/60">sdgs.un.org/goals/goal13</p>
+                  </div>
+                  <svg class="w-4 h-4 text-leaf shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </li>
+
+              <li>
+                <a href="https://www.un.org/en/climatechange" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-3.5 rounded-2xl bg-bgSoft border border-transparent hover:border-leaf/30 hover:bg-mintSoft/50 transition-all">
+                  <div>
+                    <p class="font-semibold text-sm sm:text-base text-forest group-hover:text-leaf transition-colors">UN Climate Action</p>
+                    <p class="text-xs text-forest/60">un.org/en/climatechange</p>
+                  </div>
+                  <svg class="w-4 h-4 text-leaf shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </li>
+
+              <li>
+                <a href="https://climate.nasa.gov" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-3.5 rounded-2xl bg-bgSoft border border-transparent hover:border-leaf/30 hover:bg-mintSoft/50 transition-all">
+                  <div>
+                    <p class="font-semibold text-sm sm:text-base text-forest group-hover:text-leaf transition-colors">NASA Climate Change</p>
+                    <p class="text-xs text-forest/60">climate.nasa.gov</p>
+                  </div>
+                  <svg class="w-4 h-4 text-leaf shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </li>
+
+              <li>
+                <a href="https://www.ipcc.ch" target="_blank" rel="noopener noreferrer" class="group flex items-center justify-between p-3.5 rounded-2xl bg-bgSoft border border-transparent hover:border-leaf/30 hover:bg-mintSoft/50 transition-all">
+                  <div>
+                    <p class="font-semibold text-sm sm:text-base text-forest group-hover:text-leaf transition-colors">IPCC</p>
+                    <p class="text-xs text-forest/60">ipcc.ch</p>
+                  </div>
+                  <svg class="w-4 h-4 text-leaf shrink-0 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================
+       MINIMAL FOOTER
+       ========================================================= -->
+  <footer class="border-t border-borderSoft bg-white py-10 px-4 sm:px-6">
+    <div class="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3 text-sm">
+        <span class="font-serif font-bold text-forest">ClimateGuard · SDG 13</span>
+        <span class="hidden sm:inline text-forest/30">|</span>
+        <span class="text-forest/70">Student Project · Kyro · 1143557</span>
+      </div>
+      <p class="text-xs font-medium text-forest/60">
+        Educational Website Project · 2026
+      </p>
+    </div>
+  </footer>
+
+  <!-- =========================================================
+       SELF-CONTAINED VANILLA JAVASCRIPT
+       ========================================================= -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ---------------------------------------------------------
+         1. READING PROGRESS BAR & MOBILE MENU
+         --------------------------------------------------------- */
+      const progressBar = document.getElementById('reading-progress');
+      window.addEventListener('scroll', function () {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const percent = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+        progressBar.style.width = percent + '%';
+      }, { passive: true });
+
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const mobileMenu = document.getElementById('mobile-menu');
+      const iconOpen = document.getElementById('icon-open');
+      const iconClose = document.getElementById('icon-close');
+      const mobileLinks = document.querySelectorAll('.mobile-link');
+
+      function toggleMenu(open) {
+        mobileMenu.classList.toggle('hidden', !open);
+        iconOpen.classList.toggle('hidden', open);
+        iconClose.classList.toggle('hidden', !open);
+        mobileBtn.setAttribute('aria-expanded', String(open));
+      }
+
+      mobileBtn.addEventListener('click', function () {
+        toggleMenu(mobileMenu.classList.contains('hidden'));
+      });
+      mobileLinks.forEach(function (link) {
+        link.addEventListener('click', function () { toggleMenu(false); });
+      });
+
+      /* ---------------------------------------------------------
+         2. LEARN SECTION: INTERACTIVE 2-TAB SWITCHER
+         --------------------------------------------------------- */
+      const LEARN_DATA = {
+        causes: [
+          {
+            num: '01',
+            title: 'Fossil Fuels',
+            desc: 'Burning coal, oil, and gas for electricity and heat releases CO₂ that traps warmth in our atmosphere.',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />'
+          },
+          {
+            num: '02',
+            title: 'Land-Use Change',
+            desc: 'Deforestation removes trees that naturally store carbon and can release stored emissions back into the air.',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 22V12m0 0C12 7 7 4 3 6c0 5 4 8 9 6zm0 0c0-5 5-8 9-6 0 5-4 8-9 6z" />'
+          },
+          {
+            num: '03',
+            title: 'Production & Consumption',
+            desc: 'Industry, transport, buildings, and food systems all generate greenhouse gases in everyday life.',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />'
+          }
+        ],
+        impacts: [
+          {
+            num: '01',
+            title: 'People',
+            desc: 'Extreme heat, health risks, and severe storms threaten homes, safety, and daily livelihoods.',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />'
+          },
+          {
+            num: '02',
+            title: 'Water & Food',
+            desc: 'Droughts, floods, and shifting growing seasons put pressure on freshwater and food supplies.',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />'
+          },
+          {
+            num: '03',
+            title: 'Nature',
+            desc: 'Ecosystems and wildlife face growing stress as temperatures rise and natural habitats change.',
+            icon: '<path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />'
+          }
+        ]
+      };
+
+      const learnPanel = document.getElementById('panel-learn');
+      const learnTabs = document.querySelectorAll('.learn-tab-btn');
+
+      function renderLearnTab(tabKey) {
+        const items = LEARN_DATA[tabKey] || LEARN_DATA.causes;
+        learnPanel.innerHTML = items.map(function (item) {
+          return (
+            '<article class="animate-fade-up bg-bgSoft border border-borderSoft rounded-3xl p-6 sm:p-7 hover:border-leaf/40 transition-colors">' +
+              '<div class="flex items-center justify-between mb-5">' +
+                '<span class="w-11 h-11 rounded-2xl bg-white border border-borderSoft text-leaf flex items-center justify-center">' +
+                  '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">' + item.icon + '</svg>' +
+                '</span>' +
+                '<span class="font-serif font-bold text-sm text-amberSun">' + item.num + '</span>' +
+              '</div>' +
+              '<h3 class="font-serif font-bold text-xl text-forest mb-2">' + item.title + '</h3>' +
+              '<p class="text-sm text-forest/75 leading-relaxed">' + item.desc + '</p>' +
+            '</article>'
+          );
+        }).join('');
+      }
+
+      learnTabs.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const tabKey = btn.getAttribute('data-tab');
+          learnTabs.forEach(function (t) {
+            const active = t === btn;
+            t.setAttribute('aria-selected', String(active));
+            t.classList.toggle('bg-forest', active);
+            t.classList.toggle('text-white', active);
+            t.classList.toggle('shadow-sm', active);
+            t.classList.toggle('text-forest/75', !active);
+          });
+          renderLearnTab(tabKey);
+        });
+      });
+
+      /* ---------------------------------------------------------
+         3. SOLUTIONS SECTION: 4-CATEGORY INTERACTIVE EXPLORER
+         --------------------------------------------------------- */
+      const SOLUTIONS_DATA = {
+        energy: [
+          {
+            title: 'Switch to LED Lighting',
+            desc: 'Replace older bulbs with LEDs in your room and study desk to use a fraction of the power.',
+            why: 'Uses up to 75% less electricity'
+          },
+          {
+            title: 'Unplug Idle Chargers',
+            desc: 'Turn off power strips overnight so idle laptops, TVs, and chargers stop sipping standby energy.',
+            why: 'Cuts hidden phantom power'
+          },
+          {
+            title: 'Wash Laundry in Cold Water',
+            desc: 'Modern detergents clean effectively in cold cycles without heating gallons of water.',
+            why: 'Saves water-heating energy'
+          }
+        ],
+        resources: [
+          {
+            title: 'Carry a Reusable Bottle & Bag',
+            desc: 'Keep a refillable bottle and foldable tote in your backpack to skip single-use plastics.',
+            why: 'Reduces plastic waste & production'
+          },
+          {
+            title: 'Plan Meals to Cut Food Waste',
+            desc: 'Store leftovers visibly and shop with a short list so good food never ends up in the bin.',
+            why: 'Lowers landfill methane emissions'
+          },
+          {
+            title: 'Repair, Borrow, or Buy Secondhand',
+            desc: 'Give clothes and gadgets a second life before buying brand-new replacements.',
+            why: 'Shrinks manufacturing footprint'
+          }
+        ],
+        nature: [
+          {
+            title: 'Grow Native Plants',
+            desc: 'Add a native herb or flower to a windowsill, balcony, or garden to support local pollinators.',
+            why: 'Boosts biodiversity with less water'
+          },
+          {
+            title: 'Try More Plant-Based Meals',
+            desc: 'Swap in a plant-forward lunch or dinner a few times a week to lighten food-system impact.',
+            why: 'Requires less land & water'
+          },
+          {
+            title: 'Care for Local Green Spaces',
+            desc: 'Join a park cleanup or protect neighborhood trees that naturally cool streets and store carbon.',
+            why: 'Protects urban carbon sinks'
+          }
+        ],
+        travel: [
+          {
+            title: 'Walk or Bike Short Trips',
+            desc: 'Skip the car for quick neighborhood errands under 2 kilometers whenever it is safe.',
+            why: 'Zero tailpipe emissions'
+          },
+          {
+            title: 'Take Public Transit',
+            desc: 'Ride buses, trains, or metros for school and daily commutes to share energy efficiently.',
+            why: 'Cuts per-person travel CO₂'
+          },
+          {
+            title: 'Carpool with Friends',
+            desc: 'Coordinate rides with classmates or family heading to the same place.',
+            why: 'Fewer cars on the road'
+          }
+        ]
+      };
+
+      const solutionsContainer = document.getElementById('solutions-container');
+      const solutionPills = document.querySelectorAll('.sol-pill');
+
+      function renderSolutions(catKey) {
+        const cards = SOLUTIONS_DATA[catKey] || SOLUTIONS_DATA.energy;
+        solutionsContainer.innerHTML = cards.map(function (card) {
+          return (
+            '<article class="animate-fade-up bg-white border border-borderSoft rounded-3xl p-6 sm:p-7 flex flex-col justify-between hover:border-leaf/40 hover:shadow-sm transition-all">' +
+              '<div>' +
+                '<h3 class="font-serif font-bold text-xl text-forest mb-2.5">' + card.title + '</h3>' +
+                '<p class="text-sm text-forest/75 leading-relaxed mb-5">' + card.desc + '</p>' +
+              '</div>' +
+              '<div class="pt-4 border-t border-borderSoft">' +
+                '<span class="inline-flex items-center gap-1.5 text-xs font-bold text-leaf bg-mintSoft px-3 py-1 rounded-full">' +
+                  '✦ Why it helps: ' + card.why +
+                '</span>' +
+              '</div>' +
+            '</article>'
+          );
+        }).join('');
+      }
+
+      solutionPills.forEach(function (pill) {
+        pill.addEventListener('click', function () {
+          const catKey = pill.getAttribute('data-sol-cat');
+          solutionPills.forEach(function (p) {
+            const active = p === pill;
+            p.classList.toggle('bg-forest', active);
+            p.classList.toggle('text-white', active);
+            p.classList.toggle('shadow-sm', active);
+            p.classList.toggle('bg-white', !active);
+            p.classList.toggle('text-forest', !active);
+            p.classList.toggle('border', !active);
+            p.classList.toggle('border-borderSoft', !active);
+          });
+          renderSolutions(catKey);
+        });
+      });
+
+      /* ---------------------------------------------------------
+         4. TAKE ACTION: 8 HABITS + LIVING 5-STAGE GROWING PLANT
+         --------------------------------------------------------- */
+      const STORAGE_KEY = 'climateguard_habits_v2';
+
+      const HABITS = [
+        { id: 'h1', label: 'Switch off idle electronics', tag: 'Energy' },
+        { id: 'h2', label: 'Carry a reusable bottle & bag', tag: 'Resources' },
+        { id: 'h3', label: 'Eat one plant-based meal today', tag: 'Nature' },
+        { id: 'h4', label: 'Walk, bike, or take transit for a short trip', tag: 'Travel' },
+        { id: 'h5', label: 'Wash laundry in cold water', tag: 'Energy' },
+        { id: 'h6', label: 'Cut food waste by planning meals', tag: 'Resources' },
+        { id: 'h7', label: 'Air-dry clothes when possible', tag: 'Energy' },
+        { id: 'h8', label: 'Share one climate fact with a friend', tag: 'Awareness' }
+      ];
+
+      // 5 handcrafted minimalist plant SVGs representing growth from Seed -> Thriving Tree
+      const PLANT_STAGES = [
+        {
+          min: 0,
+          badge: 'Seedling Starter',
+          message: 'Start with just one small habit today—every check helps your plant sprout!',
+          svg: `
+            <svg viewBox="0 0 200 180" class="w-44 h-40 animate-pop" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <ellipse cx="100" cy="154" rx="54" ry="12" fill="#E2E8E0" />
+              <path d="M62 152C62 135 80 128 100 128C120 128 138 135 138 152H62Z" fill="#163A2C" />
+              <ellipse cx="100" cy="122" rx="14" ry="10" transform="rotate(-12 100 122)" fill="#E09F3E" />
+              <path d="M96 115C101 117 104 122 104 128" stroke="#163A2C" stroke-width="2" stroke-linecap="round" opacity="0.45" />
+            </svg>`
+        },
+        {
+          min: 1,
+          badge: 'Green Sprout',
+          message: 'It sprouted! Small daily choices are already taking root.',
+          svg: `
+            <svg viewBox="0 0 200 180" class="w-44 h-40 animate-pop" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <ellipse cx="100" cy="154" rx="54" ry="12" fill="#E2E8E0" />
+              <path d="M62 152C62 135 80 128 100 128C120 128 138 135 138 152H62Z" fill="#163A2C" />
+              <path d="M100 132V96" stroke="#2D7A56" stroke-width="5" stroke-linecap="round" />
+              <path d="M100 104C83 102 74 91 77 79C91 79 100 89 100 104Z" fill="#2D7A56" />
+              <path d="M100 98C115 95 125 84 122 72C109 73 100 84 100 98Z" fill="#2D7A56" fill-opacity="0.85" />
+            </svg>`
+        },
+        {
+          min: 3,
+          badge: 'Growing Steward',
+          message: 'Your plant is growing strong—keep building those practical habits!',
+          svg: `
+            <svg viewBox="0 0 200 180" class="w-44 h-40 animate-pop" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <ellipse cx="100" cy="154" rx="58" ry="12" fill="#E2E8E0" />
+              <path d="M60 152C60 134 78 127 100 127C122 127 140 134 140 152H60Z" fill="#163A2C" />
+              <path d="M100 132V68" stroke="#2D7A56" stroke-width="5.5" stroke-linecap="round" />
+              <path d="M100 112C80 110 68 97 71 84C86 84 98 96 100 112Z" fill="#2D7A56" />
+              <path d="M100 102C120 99 132 86 129 73C114 74 102 86 100 102Z" fill="#2D7A56" />
+              <path d="M100 80C84 75 76 62 81 51C94 53 101 65 100 80Z" fill="#2D7A56" fill-opacity="0.85" />
+              <path d="M100 72C115 66 122 54 117 44C105 47 99 58 100 72Z" fill="#E09F3E" />
+            </svg>`
+        },
+        {
+          min: 6,
+          badge: 'Blooming Champion',
+          message: 'Almost in full bloom! Your everyday choices are making a real difference.',
+          svg: `
+            <svg viewBox="0 0 200 180" class="w-44 h-40 animate-pop" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="150" cy="40" r="14" fill="#E09F3E" fill-opacity="0.22" />
+              <circle cx="150" cy="40" r="8" fill="#E09F3E" />
+              <ellipse cx="100" cy="154" rx="60" ry="12" fill="#E2E8E0" />
+              <path d="M58 152C58 134 77 127 100 127C123 127 142 134 142 152H58Z" fill="#163A2C" />
+              <path d="M100 132V56" stroke="#163A2C" stroke-width="6" stroke-linecap="round" />
+              <path d="M100 112C76 110 64 95 67 80C85 81 98 94 100 112Z" fill="#2D7A56" />
+              <path d="M100 100C124 97 136 82 133 68C115 69 102 83 100 100Z" fill="#2D7A56" />
+              <path d="M100 76C80 71 71 56 77 44C91 46 100 59 100 76Z" fill="#2D7A56" />
+              <!-- Warm Blossom -->
+              <circle cx="100" cy="46" r="14" fill="#E09F3E" />
+              <circle cx="100" cy="46" r="6" fill="#163A2C" />
+            </svg>`
+        },
+        {
+          min: 8,
+          badge: 'Climate Guardian!',
+          message: 'Amazing! You completed all 8 habits—a thriving tree for a healthier planet!',
+          svg: `
+            <svg viewBox="0 0 200 180" class="w-44 h-40 animate-pop" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <circle cx="156" cy="36" r="18" fill="#E09F3E" fill-opacity="0.22" />
+              <circle cx="156" cy="36" r="10" fill="#E09F3E" />
+              <ellipse cx="100" cy="156" rx="66" ry="12" fill="#E2E8E0" />
+              <path d="M92 154L96 98H104L108 154H92Z" fill="#163A2C" />
+              <path d="M99 116L82 100" stroke="#163A2C" stroke-width="5" stroke-linecap="round" />
+              <path d="M101 112L118 96" stroke="#163A2C" stroke-width="5" stroke-linecap="round" />
+              <!-- Lush Canopy -->
+              <circle cx="100" cy="68" r="34" fill="#2D7A56" />
+              <circle cx="72" cy="84" r="24" fill="#2D7A56" />
+              <circle cx="128" cy="84" r="24" fill="#2D7A56" />
+              <circle cx="100" cy="56" r="22" fill="#3B9369" />
+              <!-- Golden Blossoms / Fruits -->
+              <circle cx="80" cy="76" r="5" fill="#E09F3E" />
+              <circle cx="118" cy="68" r="5.5" fill="#E09F3E" />
+              <circle cx="102" cy="88" r="4.5" fill="#E09F3E" />
+              <circle cx="96" cy="48" r="4.5" fill="#E09F3E" />
+            </svg>`
+        }
+      ];
+
+      function getStageForCount(count) {
+        if (count >= 8) return PLANT_STAGES[4];
+        if (count >= 6) return PLANT_STAGES[3];
+        if (count >= 3) return PLANT_STAGES[2];
+        if (count >= 1) return PLANT_STAGES[1];
+        return PLANT_STAGES[0];
+      }
+
+      function loadCompleted() {
+        try {
+          const raw = window.localStorage.getItem(STORAGE_KEY);
+          const parsed = raw ? JSON.parse(raw) : [];
+          return Array.isArray(parsed) ? new Set(parsed) : new Set();
+        } catch (e) {
+          return new Set();
+        }
+      }
+
+      function saveCompleted(set) {
+        try {
+          window.localStorage.setItem(STORAGE_KEY, JSON.stringify(Array.from(set)));
+        } catch (e) {
+          // Safe fallback if storage is unavailable
+        }
+      }
+
+      let completed = loadCompleted();
+      let lastStageBadge = '';
+
+      const habitListEl = document.getElementById('habit-list');
+      const plantSvgWrapper = document.getElementById('plant-svg-wrapper');
+      const plantBadgeName = document.getElementById('plant-badge-name');
+      const progressPercentEl = document.getElementById('progress-percent');
+      const progressCountEl = document.getElementById('progress-count');
+      const progressMessageEl = document.getElementById('progress-message');
+      const progressBarFill = document.getElementById('progress-bar-fill');
+      const progressBarWrap = document.getElementById('progress-bar-wrap');
+      const heroLevelName = document.getElementById('hero-level-name');
+      const heroLevelCount = document.getElementById('hero-level-count');
+      const confettiLayer = document.getElementById('confetti-layer');
+      const resetBtn = document.getElementById('reset-progress-btn');
+      const resetFeedback = document.getElementById('reset-feedback');
+
+      // Gentle celebratory leaf/confetti burst when reaching 8/8
+      function triggerLeafCelebration() {
+        confettiLayer.innerHTML = '';
+        const colors = ['#2D7A56', '#E09F3E', '#163A2C', '#52B788'];
+        for (let i = 0; i < 18; i++) {
+          const leaf = document.createElement('span');
+          leaf.className = 'confetti-leaf';
+          leaf.style.left = Math.random() * 90 + 5 + '%';
+          leaf.style.animationDelay = (Math.random() * 0.45).toFixed(2) + 's';
+          const color = colors[i % colors.length];
+          leaf.innerHTML =
+            '<svg width="14" height="14" viewBox="0 0 16 16" fill="none">' +
+              '<path d="M14 2C8 2 3 6 2 14C10 13 14 8 14 2Z" fill="' + color + '" />' +
+            '</svg>';
+          confettiLayer.appendChild(leaf);
+        }
+        setTimeout(function () {
+          confettiLayer.innerHTML = '';
+        }, 2500);
+      }
+
+      function updateProgressUI(justCompletedAll) {
+        const total = HABITS.length;
+        const count = completed.size;
+        const percent = Math.round((count / total) * 100);
+        const stage = getStageForCount(count);
+
+        progressPercentEl.textContent = percent + '%';
+        progressCountEl.textContent = count + ' of ' + total + ' habits';
+        progressBarFill.style.width = percent + '%';
+        progressBarWrap.setAttribute('aria-valuenow', String(percent));
+        plantBadgeName.textContent = stage.badge;
+        progressMessageEl.textContent = stage.message;
+
+        // Sync live level with the Hero Earth/Sprout card
+        heroLevelName.textContent = stage.badge;
+        heroLevelCount.textContent = count + ' / ' + total;
+
+        // Re-render plant SVG only when growth stage changes for crisp animation
+        if (stage.badge !== lastStageBadge) {
+          plantSvgWrapper.innerHTML = stage.svg;
+          lastStageBadge = stage.badge;
+        }
+
+        if (justCompletedAll) {
+          triggerLeafCelebration();
+        }
+      }
+
+      function renderHabits() {
+        habitListEl.innerHTML = '';
+        HABITS.forEach(function (habit) {
+          const isDone = completed.has(habit.id);
+
+          const row = document.createElement('button');
+          row.type = 'button';
+          row.setAttribute('role', 'checkbox');
+          row.setAttribute('aria-checked', String(isDone));
+          row.className =
+            'w-full text-left flex items-center gap-4 p-4 sm:p-5 rounded-2xl border transition-all cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-leaf ' +
+            (isDone
+              ? 'bg-mintSoft/70 border-leaf/40'
+              : 'bg-bgSoft border-borderSoft hover:bg-white hover:border-leaf/40');
+
+          // Custom animated checkbox circle
+          const checkBox =
+            '<span class="w-6 h-6 rounded-lg flex items-center justify-center shrink-0 transition-all ' +
+            (isDone
+              ? 'bg-leaf text-white animate-pop'
+              : 'bg-white border-2 border-borderSoft') +
+            '">' +
+              (isDone
+                ? '<svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>'
+                : '') +
+            '</span>';
+
+          const textHtml =
+            '<span class="flex-1 text-sm sm:text-base font-semibold transition-colors ' +
+            (isDone ? 'line-through text-forest/60' : 'text-forest') +
+            '">' + habit.label + '</span>' +
+            '<span class="hidden sm:inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold ' +
+            (isDone ? 'bg-white text-leaf' : 'bg-white border border-borderSoft text-forest/60') +
+            '">' + habit.tag + '</span>';
+
+          row.innerHTML = checkBox + textHtml;
+
+          row.addEventListener('click', function () {
+            const wasFull = completed.size === HABITS.length;
+            if (completed.has(habit.id)) {
+              completed.delete(habit.id);
+            } else {
+              completed.add(habit.id);
+            }
+            saveCompleted(completed);
+            renderHabits();
+            updateProgressUI(!wasFull && completed.size === HABITS.length);
+          });
+
+          habitListEl.appendChild(row);
+        });
+      }
+
+      // Reset Progress button (inline feedback, no alert/confirm)
+      let feedbackTimer = null;
+      resetBtn.addEventListener('click', function () {
+        if (completed.size === 0) {
+          resetFeedback.textContent = 'Already at 0%. Check any habit to begin!';
+        } else {
+          completed.clear();
+          saveCompleted(completed);
+          renderHabits();
+          updateProgressUI(false);
+          resetFeedback.textContent = 'Progress reset to Seed stage.';
+        }
+        resetFeedback.classList.remove('opacity-0');
+        clearTimeout(feedbackTimer);
+        feedbackTimer = setTimeout(function () {
+          resetFeedback.classList.add('opacity-0');
+        }, 2500);
+      });
+
+      /* ---------------------------------------------------------
+         INITIALIZE ALL SECTIONS
+         --------------------------------------------------------- */
+      renderLearnTab('causes');
+      renderSolutions('energy');
+      renderHabits();
+      updateProgressUI(false);
+    })();
+  </script>
+</body>
+</html>
